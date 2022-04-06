@@ -9,7 +9,7 @@ npm-debug.*
 *.mobileprovision
 *.orig.*
 web-build/
-private.js
+private/
 
 # macOS
 .DS_Store
