@@ -5,7 +5,7 @@ import { API_KEY } from '../private/private'
 
 const MainScreen = () => {
 
-  // Текст для проверки гита
+  console.log(false)
 
   const [randomMovie, setRandomMovie] = useState({
     name: '',
