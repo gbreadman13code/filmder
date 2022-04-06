@@ -30,9 +30,10 @@ const MainScreen = () => {
         if (result.status_code == 34) {
           nextFilmHandler()
         } else {
-          if (result.poster_path == null || result.overview == '') {
+          if (result.poster_path == null || result.release_date == '' || result.genres == [] || result.title.charCodeAt() < 1040 || result.title.charCodeAt() > 1103) {
             nextFilmHandler()
           } else {
+            console.log(result.title.charCodeAt())
             setRandomMovie({
               name: result.title,
               description: result.overview,
@@ -44,43 +45,56 @@ const MainScreen = () => {
             setIsLoad(false)
           }
         }
-        
+
       })
   }
-  console.log(isLoad)
   const genreList = randomMovie.genre.join(', ')
 
   return (
     <>
+
       <View style={{ flex: 15, justifyContent: 'center', alignItems: 'center', backgroundColor: '#000' }}>
         <TouchableOpacity style={styles.navButtonLeft}></TouchableOpacity>
         <TouchableOpacity style={styles.navButtonRight} activeOpacity={0.1} onPress={nextFilmHandler}></TouchableOpacity>
-        <Text style={{ 
-          marginTop: 35, 
-          paddingVertical: 15, 
-          paddingHorizontal: 30, 
-          backgroundColor: '#fff', 
-          width: '100%', 
-          textAlign: 'center', 
-          fontSize: 20 }}>
-            {randomMovie.name} ({randomMovie.release})
-        </Text>
-        <ScrollView>
-          <View style={styles.imageContainer}>
-            {randomMovie.isAdult == true ? <Image style={styles.disclaimer} source={{width: 90, height: 90, uri: 'https://cdn-icons-png.flaticon.com/512/3728/3728706.png'}}/> : <View></View>}
-            {isLoad === true ? <ActivityIndicator size='large' color='white' /> : <Image source={{ width: 333, height: 500, uri: `https://www.themoviedb.org/t/p/w1280/${randomMovie.image}`}}/> }
-          </View>
-          <View style={{ width: '100%' }}>
-            <View style={styles.descriptionWrapper}>
-              <Text style={styles.textHeader}>Описание</Text>
-              <Text style={styles.description}>{randomMovie.description}</Text>
-              <ScrollView horizontal={true}>
-                <Text style={[styles.textHeader, styles.genre]}>Жанр: {genreList}</Text>
-              </ScrollView>
-              <Text style={styles.textHeader}>Год выпуска: {randomMovie.release}</Text>
-            </View>
-          </View>
-        </ScrollView>
+        {isLoad === true ? 
+        
+        <>
+        <ActivityIndicator size='large' color='white' />
+        <Text style={{color: 'white'}}>Подбираем фильм...</Text>
+        </>
+
+        :
+          <>
+            <Text style={{
+              marginTop: 35,
+              paddingVertical: 15,
+              paddingHorizontal: 30,
+              backgroundColor: '#fff',
+              width: '100%',
+              textAlign: 'center',
+              fontSize: 20
+            }}>
+              {randomMovie.name} ({randomMovie.release})
+            </Text>
+            <ScrollView>
+              <View style={styles.imageContainer}>
+                {randomMovie.isAdult == true ? <Image style={styles.disclaimer} source={{ width: 90, height: 90, uri: 'https://cdn-icons-png.flaticon.com/512/3728/3728706.png' }} /> : <View></View>}
+                <Image source={{ width: 333, height: 500, uri: `https://www.themoviedb.org/t/p/w1280/${randomMovie.image}` }} />
+              </View>
+              <View style={{ width: '100%' }}>
+                <View style={styles.descriptionWrapper}>
+                  <Text style={styles.textHeader}>Описание</Text>
+                  <Text style={styles.description}>{randomMovie.description}</Text>
+                  <ScrollView horizontal={true}>
+                    <Text style={[styles.textHeader, styles.genre]}>Жанр: {genreList}</Text>
+                  </ScrollView>
+                  <Text style={styles.textHeader}>Год выпуска: {randomMovie.release}</Text>
+                </View>
+              </View>
+            </ScrollView>
+          </>
+        }
+
       </View>
     </>
   )
