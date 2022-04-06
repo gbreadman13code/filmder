@@ -5,8 +5,6 @@ import { API_KEY } from '../private/private'
 
 const MainScreen = () => {
 
-  console.log(false)
-
   const [randomMovie, setRandomMovie] = useState({
     name: '',
     description: '',
