@@ -1,6 +1,6 @@
 import { StyleSheet, Text, Image, View, ScrollView, TouchableOpacity, ActivityIndicator, ImageBackground } from 'react-native'
 import React, { useState, useEffect } from 'react'
-import { API_KEY } from '../private/private'
+import { API_KEY } from '../private/private'  
 
 
 const MainScreen = () => {
@@ -11,7 +11,8 @@ const MainScreen = () => {
     image: '',
     release: '',
     isAdult: false,
-    genre: []
+    genre: [],
+    duration: ''
   })
   const [isLoad, setIsLoad] = useState(false)
 
@@ -35,13 +36,19 @@ const MainScreen = () => {
             nextFilmHandler()
           } else {
             console.log(result.title.charCodeAt())
+            const makeRuntime = (time) => {
+              let hours = Math.floor(time/60)
+              let minutes = time - hours*60
+              return `${hours} ч. ${minutes} м.`
+            }
             setRandomMovie({
               name: result.title,
               description: result.overview,
               image: result.poster_path,
               release: result.release_date.slice(0, -6),
               isAdult: result.adult,
-              genre: result.genres.map(item => `${item.name}`)
+              genre: result.genres.map(item => `${item.name}`),
+              duration: makeRuntime(result.runtime)
             })
             setIsLoad(false)
           }
@@ -49,9 +56,8 @@ const MainScreen = () => {
 
       })
   }
-  const genreList = randomMovie.genre.map((item, index) =>
-    <Text key={index} style={styles.genres}>{item}</Text>
-  )
+  const genreList = randomMovie.genre.join(', ')
+  console.log(genreList)
 
   return (
     <>
@@ -88,10 +94,10 @@ const MainScreen = () => {
                 }}>
                   {randomMovie.name} <Text style={{ fontSize: 20, fontWeight: 'normal' }}>{randomMovie.release}</Text>
                 </Text>
+                <Text style={{ flexDirection: 'row', flexWrap: 'wrap', marginBottom: 10, textAlign: 'center', color: '#fff' }}>{genreList} {randomMovie.duration}</Text>
                 <View style={{ width: '100%' }}>
                   <View style={styles.descriptionWrapper}>
                     <Text style={styles.description}>{randomMovie.description}</Text>
-                    <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginTop: 10, justifyContent: 'center' }}>{genreList}</View>
                   </View>
                 </View>
               </View>
