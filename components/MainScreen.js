@@ -1,6 +1,7 @@
 import { StyleSheet, Text, Image, View, ScrollView, TouchableOpacity, ActivityIndicator, ImageBackground } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { API_KEY } from '../private/private'  
+import GifImage from '@lowkey/react-native-gif';
 
 
 const MainScreen = ({ navigation }) => {
@@ -19,11 +20,18 @@ const MainScreen = ({ navigation }) => {
     
   ])
   const [isLoad, setIsLoad] = useState(false)
+  const [likeAnimation, setLikeAnimation] = useState(false)
 
   const addToLoved = () => {
     const isLiked = likedMovies.some(item => item.id === randomMovie.id)
     if (isLiked === false) {
+      setLikeAnimation(true)
+      setTimeout(() => {
+        setLikeAnimation(false)
+        nextFilmHandler()
+      }, 900)
       setLikedMovies(likedMovies => [...likedMovies, randomMovie])
+      
     } else {
       console.log('This film is liked early')
     }
@@ -82,7 +90,16 @@ const MainScreen = ({ navigation }) => {
     <>
 
       <View style={{ flex: 15, justifyContent: 'center', alignItems: 'center', backgroundColor: '#000' }}>
-       
+      {likeAnimation === true ? <Image 
+        style={styles.addLike}
+        source={{
+          width: 400,
+          height: 400,
+          uri: 'https://data.whicdn.com/images/266332223/original.gif'
+        }}
+      /> : <></>}
+      
+      
         {isLoad === true ?
           <>
             <ActivityIndicator size='large' color='white' />
@@ -143,6 +160,10 @@ const styles = StyleSheet.create({
   backgroundImage: {
     width: '100%',
     // height: '100%',
+  },
+  addLike: {
+    position: 'absolute',
+    zIndex: 2,
   },
   disclaimer: {
     position: 'absolute',
