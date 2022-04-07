@@ -49,9 +49,10 @@ const MainScreen = () => {
 
       })
   }
-  const genreList = randomMovie.genre.map((item) =>
-    <Text style={styles.genres}>{item}</Text>
+  const genreList = randomMovie.genre.map((item, index) =>
+    <Text key={index} style={styles.genres}>{item}</Text>
   )
+
   return (
     <>
 
@@ -66,35 +67,37 @@ const MainScreen = () => {
           </>
 
           :
-          <ImageBackground source={{ uri: `https://www.themoviedb.org/t/p/w1280/${randomMovie.image}` }} style={styles.backgroundImage} blurRadius={90}>
-            <View style={{ height: 40 }}></View>
-            <ScrollView>
-              <View style={styles.imageContainer}>
-                {randomMovie.isAdult == true ? <Image style={styles.disclaimer} source={{ width: 90, height: 90, uri: 'https://cdn-icons-png.flaticon.com/512/3728/3728706.png' }} /> : <View></View>}
-                <Image source={{ width: 333, height: 500, uri: `https://www.themoviedb.org/t/p/w1280/${randomMovie.image}` }} />
-              </View>
-              <Text style={{
-                paddingVertical: 15,
-                paddingHorizontal: 30,
-                // backgroundColor: '#fff',
-                width: '100%',
-                color: '#fff',
-                textAlign: 'center',
-                fontSize: 30,
-                textTransform: 'uppercase',
-                fontWeight: 'bold'
-              }}>
-                {randomMovie.name} <Text style={{ fontSize: 20, fontWeight: 'normal' }}>{randomMovie.release}</Text>
-              </Text>
-              <View style={{ width: '100%' }}>
-                <View style={styles.descriptionWrapper}>
-                  <Text style={styles.description}>{randomMovie.description}</Text>
-                  <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginTop: 10, justifyContent: 'center' }}>{genreList}</View>
+          <>
+            <ScrollView style={{width: '100%',}}>
+              <ImageBackground source={{ uri: `https://www.themoviedb.org/t/p/w1280/${randomMovie.image}` }} style={styles.backgroundImage} blurRadius={90}>
+                <View style={styles.imageContainer}>
+                  {randomMovie.isAdult == true ? <Image style={styles.disclaimer} source={{ width: 90, height: 90, uri: 'https://cdn-icons-png.flaticon.com/512/3728/3728706.png' }} /> : <View></View>}
+                  <Image source={{ width: 266, height: 400, uri: `https://www.themoviedb.org/t/p/w1280/${randomMovie.image}` }} />
+                </View>
+              </ImageBackground>
+              <View style={{ backgroundColor: 'black', flex: 2 }}>
+                <Text style={{
+                  paddingVertical: 15,
+                  paddingHorizontal: 30,
+                  width: '100%',
+                  color: '#fff',
+                  textAlign: 'center',
+                  fontSize: 30,
+                  textTransform: 'uppercase',
+                  fontWeight: 'bold'
+                }}>
+                  {randomMovie.name} <Text style={{ fontSize: 20, fontWeight: 'normal' }}>{randomMovie.release}</Text>
+                </Text>
+                <View style={{ width: '100%' }}>
+                  <View style={styles.descriptionWrapper}>
+                    <Text style={styles.description}>{randomMovie.description}</Text>
+                    <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginTop: 10, justifyContent: 'center' }}>{genreList}</View>
+                  </View>
                 </View>
               </View>
             </ScrollView>
-            <View style={{ height: 20 }}></View>
-          </ImageBackground>
+
+          </>
         }
 
       </View>
@@ -115,7 +118,7 @@ const styles = StyleSheet.create({
   },
   backgroundImage: {
     width: '100%',
-    height: '100%',
+    // height: '100%',
   },
   disclaimer: {
     position: 'absolute',
@@ -161,6 +164,7 @@ const styles = StyleSheet.create({
     marginTop: 5
   },
   descriptionWrapper: {
+    backgroundColor: '#000',
     paddingHorizontal: 40,
     width: '100%'
   },
