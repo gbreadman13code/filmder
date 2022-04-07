@@ -13,7 +13,6 @@ const Auth = ({ navigation }) => {
             .then(responsive => responsive.json())
             .then(result => {
                 setToken(result.request_token)
-                console.log(result)
             })
     }
 
@@ -28,11 +27,9 @@ const Auth = ({ navigation }) => {
             .then(responsive => responsive.json())
             .then(res => {
                 if (res.success == true) {
-                    console.log(res)
                     setSessionId(res.session_id)
                     navigation.navigate('Main')
                 } else {
-                    console.log(res)
                 }
             })
     }

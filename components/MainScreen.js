@@ -3,9 +3,10 @@ import React, { useState, useEffect } from 'react'
 import { API_KEY } from '../private/private'  
 
 
-const MainScreen = () => {
+const MainScreen = ({ navigation }) => {
 
   const [randomMovie, setRandomMovie] = useState({
+    id: '',
     name: '',
     description: '',
     image: '',
@@ -14,28 +15,41 @@ const MainScreen = () => {
     genre: [],
     duration: ''
   })
+  const [likedMovies, setLikedMovies] = useState([
+    
+  ])
   const [isLoad, setIsLoad] = useState(false)
 
-  const getRandomInt = (min, max) => {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min)) + min; //Максимум не включается, минимум включается
+  const addToLoved = () => {
+    const isLiked = likedMovies.some(item => item.id === randomMovie.id)
+    if (isLiked === false) {
+      setLikedMovies(likedMovies => [...likedMovies, randomMovie])
+    } else {
+      console.log('This film is liked early')
+    }
+  }
+
+  const moveToWishList = () => {
+    navigation.navigate('Избранное', {likedMovies})
   }
 
   const nextFilmHandler = () => {
     setIsLoad(true)
+    const getRandomInt = (min, max) => {
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      return Math.floor(Math.random() * (max - min)) + min; //Максимум не включается, минимум включается
+    }
     const randMovieId = getRandomInt(1, 999999)
     fetch(`https://api.themoviedb.org/3/movie/${randMovieId}?api_key=${API_KEY}&language=ru`)
       .then(responsive => responsive.json())
       .then(result => {
-        console.log(result)
         if (result.status_code == 34) {
           nextFilmHandler()
         } else {
           if (result.poster_path == null || result.release_date == '' || result.genres == [] || result.title.charCodeAt() < 1040 || result.title.charCodeAt() > 1103) {
             nextFilmHandler()
           } else {
-            console.log(result.title.charCodeAt())
             const makeRuntime = (time) => {
               let hours = Math.floor(time/60)
               let minutes = time - hours*60
@@ -46,6 +60,7 @@ const MainScreen = () => {
               }
             }
             setRandomMovie({
+              id: result.id,
               name: result.title,
               description: result.overview,
               image: result.poster_path,
@@ -61,14 +76,13 @@ const MainScreen = () => {
       })
   }
   const genreList = randomMovie.genre.join(', ')
-  console.log(genreList)
+
 
   return (
     <>
 
       <View style={{ flex: 15, justifyContent: 'center', alignItems: 'center', backgroundColor: '#000' }}>
-        <TouchableOpacity style={styles.navButtonLeft}></TouchableOpacity>
-        <TouchableOpacity style={styles.navButtonRight} activeOpacity={0.1} onPress={nextFilmHandler}></TouchableOpacity>
+       
         {isLoad === true ?
           <>
             <ActivityIndicator size='large' color='white' />
@@ -76,6 +90,8 @@ const MainScreen = () => {
           </>
           :
           <>
+           <TouchableOpacity style={styles.navButtonLeft} onPress={addToLoved} onLongPress={moveToWishList}></TouchableOpacity>
+        <TouchableOpacity style={styles.navButtonRight} activeOpacity={0.1} onPress={nextFilmHandler}></TouchableOpacity>
             <ScrollView style={{width: '100%',}}>
               <ImageBackground source={{ uri: `https://www.themoviedb.org/t/p/w1280/${randomMovie.image}` }} style={styles.backgroundImage} blurRadius={90}>
                 <View style={styles.imageContainer}>

@@ -31,8 +31,16 @@ export default function App() {
           }}
         />
         <Stack.Screen
-          name={'WishList'}
+          name={'Избранное'}
           component={WishList}
+          options={{
+            headerBackTitle: 'Назад',
+            headerBackTitleStyle: 'Назад',
+            headerStyle: {
+              backgroundColor: 'black',
+            },
+            headerTintColor: 'white'
+          }}
         />
       </Stack.Navigator>
     </NavigationContainer>
