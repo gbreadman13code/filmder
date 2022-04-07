@@ -52,7 +52,6 @@ const MainScreen = () => {
   const genreList = randomMovie.genre.map((item) =>
     <Text style={styles.genres}>{item}</Text>
   )
-
   return (
     <>
 
