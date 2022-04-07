@@ -1,4 +1,4 @@
-import { StyleSheet, Text, Image, View, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native'
+import { StyleSheet, Text, Image, View, ScrollView, TouchableOpacity, ActivityIndicator, ImageBackground } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { API_KEY } from '../private/private'
 
@@ -27,6 +27,7 @@ const MainScreen = () => {
     fetch(`https://api.themoviedb.org/3/movie/${randMovieId}?api_key=${API_KEY}&language=ru`)
       .then(responsive => responsive.json())
       .then(result => {
+        console.log(result)
         if (result.status_code == 34) {
           nextFilmHandler()
         } else {
@@ -64,23 +65,25 @@ const MainScreen = () => {
         </>
 
         :
-          <>
-            <Text style={{
-              marginTop: 35,
-              paddingVertical: 15,
-              paddingHorizontal: 30,
-              backgroundColor: '#fff',
-              width: '100%',
-              textAlign: 'center',
-              fontSize: 20
-            }}>
-              {randomMovie.name} ({randomMovie.release})
-            </Text>
+          <ImageBackground source={{uri: `https://www.themoviedb.org/t/p/w1280/${randomMovie.image}`}} style={styles.backgroundImage} blurRadius={90}>
             <ScrollView>
               <View style={styles.imageContainer}>
                 {randomMovie.isAdult == true ? <Image style={styles.disclaimer} source={{ width: 90, height: 90, uri: 'https://cdn-icons-png.flaticon.com/512/3728/3728706.png' }} /> : <View></View>}
                 <Image source={{ width: 333, height: 500, uri: `https://www.themoviedb.org/t/p/w1280/${randomMovie.image}` }} />
               </View>
+              <Text style={{
+              paddingVertical: 15,
+              paddingHorizontal: 30,
+              // backgroundColor: '#fff',
+              width: '100%',
+              color: '#fff',              
+              textAlign: 'center',
+              fontSize: 30,
+              textTransform: 'uppercase',
+              fontWeight: 'bold'
+            }}>
+              {randomMovie.name} <Text style={{fontSize: 20, fontWeight: 'normal'}}>{randomMovie.release}</Text>
+            </Text>
               <View style={{ width: '100%' }}>
                 <View style={styles.descriptionWrapper}>
                   <Text style={styles.textHeader}>Описание</Text>
@@ -88,11 +91,10 @@ const MainScreen = () => {
                   <ScrollView horizontal={true}>
                     <Text style={[styles.textHeader, styles.genre]}>Жанр: {genreList}</Text>
                   </ScrollView>
-                  <Text style={styles.textHeader}>Год выпуска: {randomMovie.release}</Text>
                 </View>
               </View>
             </ScrollView>
-          </>
+          </ImageBackground>
         }
 
       </View>
@@ -107,8 +109,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: 50,
+    paddingTop: 50,
+    paddingBottom: 20,
     paddingHorizontal: 40
+  },
+  backgroundImage: {
+    width: '100%', 
+    height: '100%', 
   },
   disclaimer: {
     position: 'absolute',
@@ -137,7 +144,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     justifyContent: 'flex-end',
     height: 50,
-    backgroundColor: '#fff'
+    // backgroundColor: '#fff'
   },
   textHeader: {
     color: '#fff',
@@ -152,7 +159,7 @@ const styles = StyleSheet.create({
     fontSize: 15
   },
   descriptionWrapper: {
-    backgroundColor: 'black',
+    // backgroundColor: 'black',
     paddingHorizontal: 20,
     width: '100%'
   },
