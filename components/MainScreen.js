@@ -49,7 +49,9 @@ const MainScreen = () => {
 
       })
   }
-  const genreList = randomMovie.genre.join(', ')
+  const genreList = randomMovie.genre.map((item) =>
+    <Text style={styles.genres}>{item}</Text>
+  )
 
   return (
     <>
@@ -57,40 +59,38 @@ const MainScreen = () => {
       <View style={{ flex: 15, justifyContent: 'center', alignItems: 'center', backgroundColor: '#000' }}>
         <TouchableOpacity style={styles.navButtonLeft}></TouchableOpacity>
         <TouchableOpacity style={styles.navButtonRight} activeOpacity={0.1} onPress={nextFilmHandler}></TouchableOpacity>
-        {isLoad === true ? 
-        
-        <>
-        <ActivityIndicator size='large' color='white' />
-        <Text style={{color: 'white'}}>Подбираем фильм...</Text>
-        </>
+        {isLoad === true ?
 
-        :
-          <ImageBackground source={{uri: `https://www.themoviedb.org/t/p/w1280/${randomMovie.image}`}} style={styles.backgroundImage} blurRadius={90}>
+          <>
+            <ActivityIndicator size='large' color='white' />
+            <Text style={{ color: 'white' }}>Подбираем фильм...</Text>
+          </>
+
+          :
+          <ImageBackground source={{ uri: `https://www.themoviedb.org/t/p/w1280/${randomMovie.image}` }} style={styles.backgroundImage} blurRadius={90}>
+            <View style={{ height: 40 }}></View>
             <ScrollView>
               <View style={styles.imageContainer}>
                 {randomMovie.isAdult == true ? <Image style={styles.disclaimer} source={{ width: 90, height: 90, uri: 'https://cdn-icons-png.flaticon.com/512/3728/3728706.png' }} /> : <View></View>}
                 <Image source={{ width: 333, height: 500, uri: `https://www.themoviedb.org/t/p/w1280/${randomMovie.image}` }} />
               </View>
               <Text style={{
-              paddingVertical: 15,
-              paddingHorizontal: 30,
-              // backgroundColor: '#fff',
-              width: '100%',
-              color: '#fff',              
-              textAlign: 'center',
-              fontSize: 30,
-              textTransform: 'uppercase',
-              fontWeight: 'bold'
-            }}>
-              {randomMovie.name} <Text style={{fontSize: 20, fontWeight: 'normal'}}>{randomMovie.release}</Text>
-            </Text>
+                paddingVertical: 15,
+                paddingHorizontal: 30,
+                // backgroundColor: '#fff',
+                width: '100%',
+                color: '#fff',
+                textAlign: 'center',
+                fontSize: 30,
+                textTransform: 'uppercase',
+                fontWeight: 'bold'
+              }}>
+                {randomMovie.name} <Text style={{ fontSize: 20, fontWeight: 'normal' }}>{randomMovie.release}</Text>
+              </Text>
               <View style={{ width: '100%' }}>
                 <View style={styles.descriptionWrapper}>
-                  <Text style={styles.textHeader}>Описание</Text>
                   <Text style={styles.description}>{randomMovie.description}</Text>
-                  <ScrollView horizontal={true}>
-                    <Text style={[styles.textHeader, styles.genre]}>Жанр: {genreList}</Text>
-                  </ScrollView>
+                  <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginTop: 10, justifyContent: 'center' }}>{genreList}</View>
                 </View>
               </View>
             </ScrollView>
@@ -114,8 +114,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 40
   },
   backgroundImage: {
-    width: '100%', 
-    height: '100%', 
+    width: '100%',
+    height: '100%',
   },
   disclaimer: {
     position: 'absolute',
@@ -139,13 +139,6 @@ const styles = StyleSheet.create({
     right: 0,
     zIndex: 2,
   },
-  isFavoriteContainer: {
-    flex: 1,
-    alignItems: 'flex-end',
-    justifyContent: 'flex-end',
-    height: 50,
-    // backgroundColor: '#fff'
-  },
   textHeader: {
     color: '#fff',
     fontSize: 25,
@@ -155,12 +148,20 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     marginVertical: 10,
   },
-  genre: {
-    fontSize: 15
+  genres: {
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderWidth: 1,
+    marginRight: 5,
+    borderColor: '#fff',
+    borderRadius: 15,
+    color: '#fff',
+    textTransform: 'uppercase',
+    // backgroundColor: '#fff',
+    marginTop: 5
   },
   descriptionWrapper: {
-    // backgroundColor: 'black',
-    paddingHorizontal: 20,
+    paddingHorizontal: 40,
     width: '100%'
   },
   description: {
