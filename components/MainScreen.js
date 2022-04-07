@@ -39,7 +39,11 @@ const MainScreen = () => {
             const makeRuntime = (time) => {
               let hours = Math.floor(time/60)
               let minutes = time - hours*60
-              return `${hours} ч. ${minutes} м.`
+              if (hours !== 0) {
+                return `${hours} ч. ${minutes} м.`
+              } else {
+                return `${minutes} м.`
+              }
             }
             setRandomMovie({
               name: result.title,
@@ -66,19 +70,17 @@ const MainScreen = () => {
         <TouchableOpacity style={styles.navButtonLeft}></TouchableOpacity>
         <TouchableOpacity style={styles.navButtonRight} activeOpacity={0.1} onPress={nextFilmHandler}></TouchableOpacity>
         {isLoad === true ?
-
           <>
             <ActivityIndicator size='large' color='white' />
             <Text style={{ color: 'white' }}>Подбираем фильм...</Text>
           </>
-
           :
           <>
             <ScrollView style={{width: '100%',}}>
               <ImageBackground source={{ uri: `https://www.themoviedb.org/t/p/w1280/${randomMovie.image}` }} style={styles.backgroundImage} blurRadius={90}>
                 <View style={styles.imageContainer}>
                   {randomMovie.isAdult == true ? <Image style={styles.disclaimer} source={{ width: 90, height: 90, uri: 'https://cdn-icons-png.flaticon.com/512/3728/3728706.png' }} /> : <View></View>}
-                  <Image source={{ width: 266, height: 400, uri: `https://www.themoviedb.org/t/p/w1280/${randomMovie.image}` }} />
+                  <Image style={{borderRadius: 30}} source={{ width: 266, height: 400, uri: `https://www.themoviedb.org/t/p/w1280/${randomMovie.image}` }} />
                 </View>
               </ImageBackground>
               <View style={{ backgroundColor: 'black', flex: 2 }}>
