@@ -94,6 +94,7 @@ const MainScreen = () => {
                 </View>
               </View>
             </ScrollView>
+            <View style={{ height: 20 }}></View>
           </ImageBackground>
         }
 
