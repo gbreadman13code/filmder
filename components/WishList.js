@@ -4,13 +4,22 @@ import React from 'react'
 const WishList = ({ route, navigation }) => {
 
   const Item = ({ name, image, genre }) => (
-    <View style={{width: '100%',}}>
+    <View style={{width: '100%', flexDirection: 'row'}}>
       <TouchableOpacity activeOpacity={0.9} style={{ flexDirection: 'row' }}>
         <Image source={{ width: 111, height: 150, uri: image }} />
         <View>
-          <Text style={{color: 'white', fontSize: 20}}>{name}</Text>
+          <Text style={{color: 'white', fontSize: 20, paddingHorizontal: 10}}>{name}</Text>
           <Text>{genre}</Text>
         </View>
+      </TouchableOpacity>
+      <TouchableOpacity>
+        <Image 
+          source={{
+            width: 50,
+            height: 50,
+            uri: 'https://cdn-icons-png.flaticon.com/512/833/833472.png'
+          }}
+        />
       </TouchableOpacity>
     </View>
   );
