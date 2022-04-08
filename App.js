@@ -18,7 +18,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen
+      <Stack.Screen
           name={'Auth'}
           component={Auth}
         />
@@ -29,6 +29,7 @@ export default function App() {
             headerShown: false,
           }}
         />
+        
         <Stack.Screen
           name={'Избранное'}
           component={WishList}

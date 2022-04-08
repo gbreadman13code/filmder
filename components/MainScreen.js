@@ -45,40 +45,40 @@ const MainScreen = ({ navigation }) => {
     }
   }
 
-  // const loadTwentyFilms = () => {
-  //   while (arrayOfFilms.length < 20) {
+  const nextFilmHandler = () => {
+    const randMovieId = getRandomInt(1, 999999)
+    fetch(`https://api.themoviedb.org/3/movie/${randMovieId}?api_key=${API_KEY}&language=ru`)
+      .then(responsive => responsive.json())
+      .then(result => {
+        if (result.status_code == 34) {
+          console.log('Film was not found')
+        } else {
+          if (result.poster_path == null || result.release_date == '' || result.genres == [] || result.title.charCodeAt() < 1040 || result.title.charCodeAt() > 1103) {
+            console.log('Film without nessasery content')
+          } else {
+            setRandomMovie({
+              id: result.id,
+              name: result.title,
+              description: result.overview,
+              image: result.poster_path,
+              release: result.release_date.slice(0, -6),
+              isAdult: result.adult,
+              genre: result.genres.map(item => `${item.name}`).join(', '),
+              duration: makeRuntime(result.runtime)
+            })
+          }
+        }
 
-  //       const randMovieId = getRandomInt(1, 999999)
-  //       fetch(`https://api.themoviedb.org/3/movie/${randMovieId}?api_key=${API_KEY}&language=ru`)
-  //         .then(responsive => responsive.json())
-  //         .then(result => {
-  //           if (result.status_code == 34) {
-  //             nextFilmHandler()
-  //           } else {
-  //             if (result.poster_path == null || result.release_date == '' || result.genres == [] || result.title.charCodeAt() < 1040 || result.title.charCodeAt() > 1103) {
-  //               nextFilmHandler()
-  //             } else {
-                
-  //               setRandomMovie({
-  //                 id: result.id,
-  //                 name: result.title,
-  //                 description: result.overview,
-  //                 image: result.poster_path,
-  //                 release: result.release_date.slice(0, -6),
-  //                 isAdult: result.adult,
-  //                 genre: result.genres.map(item => `${item.name}`),
-  //                 duration: makeRuntime(result.runtime)
-  //               })
-  //               setIsLoad(false)
-  //             }
-  //           }
-  //           setArrayOfFilms(arrayOfFilms => [...arrayOfFilms, {id: result.id, name: result.title, description: result.overview, image: result.poster_path, release: result.release_date.slice(0, -6), isAdult: result.adult, genre: result.genres.map(item => `${item.name}`), duration: makeRuntime(result.runtime)}])
-  //         })
-      
-  //   }
-  // }
-  // loadTwentyFilms()
-  // console.log(arrayOfFilms)
+      })
+  }
+  const genreList = randomMovie.genre.join(', ')
+
+  const loadTwentyFilms = () => {
+    while (arrayOfFilms.length < 20) {
+      nextFilmHandler()
+    }
+  }
+  loadTwentyFilms()
 
   const addToLoved = () => {
     const isLiked = likedMovies.some(item => item.id === randomMovie.id)
@@ -86,7 +86,6 @@ const MainScreen = ({ navigation }) => {
       setLikeAnimation(true)
       setTimeout(() => {
         setLikeAnimation(false)
-        nextFilmHandler()
       }, 900)
       setLikedMovies(likedMovies => [...likedMovies, randomMovie])
     }
@@ -96,36 +95,7 @@ const MainScreen = ({ navigation }) => {
     navigation.navigate('Избранное', { likedMovies })
   }
 
-  const nextFilmHandler = () => {
-    setIsLoad(true)
-    const randMovieId = getRandomInt(1, 999999)
-    fetch(`https://api.themoviedb.org/3/movie/${randMovieId}?api_key=${API_KEY}&language=ru`)
-      .then(responsive => responsive.json())
-      .then(result => {
-        if (result.status_code == 34) {
-          nextFilmHandler()
-        } else {
-          if (result.poster_path == null || result.release_date == '' || result.genres == [] || result.title.charCodeAt() < 1040 || result.title.charCodeAt() > 1103) {
-            nextFilmHandler()
-          } else {
-            
-            setRandomMovie({
-              id: result.id,
-              name: result.title,
-              description: result.overview,
-              image: result.poster_path,
-              release: result.release_date.slice(0, -6),
-              isAdult: result.adult,
-              genre: result.genres.map(item => `${item.name}`),
-              duration: makeRuntime(result.runtime)
-            })
-            setIsLoad(false)
-          }
-        }
-
-      })
-  }
-  const genreList = randomMovie.genre.join(', ')
+  
 
 
   return (
@@ -150,7 +120,7 @@ const MainScreen = ({ navigation }) => {
           :
           <>
             <TouchableOpacity style={styles.navButtonLeft} onPress={addToLoved} onLongPress={moveToWishList}></TouchableOpacity>
-            <TouchableOpacity style={styles.navButtonRight} activeOpacity={0.1} onPress={nextFilmHandler}></TouchableOpacity>
+            <TouchableOpacity style={styles.navButtonRight} activeOpacity={0.1}></TouchableOpacity>
             <ScrollView style={{ width: '100%', }}>
               <ImageBackground source={{ uri: `https://www.themoviedb.org/t/p/w1280/${randomMovie.image}` }} style={styles.backgroundImage} blurRadius={90}>
                 <View style={styles.imageContainer}>
