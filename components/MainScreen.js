@@ -45,42 +45,40 @@ const MainScreen = ({ navigation }) => {
     }
   }
 
-  const loadTwentyFilms = () => {
-    while (arrayOfFilms.length < 20) {
+  // const loadTwentyFilms = () => {
+  //   while (arrayOfFilms.length < 20) {
 
-        const randMovieId = getRandomInt(1, 999999)
-        fetch(`https://api.themoviedb.org/3/movie/${randMovieId}?api_key=${API_KEY}&language=ru`)
-          .then(responsive => responsive.json())
-          .then(result => {
-            if (result.status_code == 34) {
-              nextFilmHandler()
-            } else {
-              if (result.poster_path == null || result.release_date == '' || result.genres == [] || result.title.charCodeAt() < 1040 || result.title.charCodeAt() > 1103) {
-                nextFilmHandler()
-              } else {
+  //       const randMovieId = getRandomInt(1, 999999)
+  //       fetch(`https://api.themoviedb.org/3/movie/${randMovieId}?api_key=${API_KEY}&language=ru`)
+  //         .then(responsive => responsive.json())
+  //         .then(result => {
+  //           if (result.status_code == 34) {
+  //             nextFilmHandler()
+  //           } else {
+  //             if (result.poster_path == null || result.release_date == '' || result.genres == [] || result.title.charCodeAt() < 1040 || result.title.charCodeAt() > 1103) {
+  //               nextFilmHandler()
+  //             } else {
                 
-                setRandomMovie({
-                  id: result.id,
-                  name: result.title,
-                  description: result.overview,
-                  image: result.poster_path,
-                  release: result.release_date.slice(0, -6),
-                  isAdult: result.adult,
-                  genre: result.genres.map(item => `${item.name}`),
-                  duration: makeRuntime(result.runtime)
-                })
-                setIsLoad(false)
-              }
-            }
-            setArrayOfFilms(arrayOfFilms => [...arrayOfFilms, {id: result.id, name: result.title, description: result.overview, image: result.poster_path, release: result.release_date.slice(0, -6), isAdult: result.adult, genre: result.genres.map(item => `${item.name}`), duration: makeRuntime(result.runtime)}])
-          })
+  //               setRandomMovie({
+  //                 id: result.id,
+  //                 name: result.title,
+  //                 description: result.overview,
+  //                 image: result.poster_path,
+  //                 release: result.release_date.slice(0, -6),
+  //                 isAdult: result.adult,
+  //                 genre: result.genres.map(item => `${item.name}`),
+  //                 duration: makeRuntime(result.runtime)
+  //               })
+  //               setIsLoad(false)
+  //             }
+  //           }
+  //           setArrayOfFilms(arrayOfFilms => [...arrayOfFilms, {id: result.id, name: result.title, description: result.overview, image: result.poster_path, release: result.release_date.slice(0, -6), isAdult: result.adult, genre: result.genres.map(item => `${item.name}`), duration: makeRuntime(result.runtime)}])
+  //         })
       
-    }
-  }
-  loadTwentyFilms()
-  console.log(arrayOfFilms)
-
-
+  //   }
+  // }
+  // loadTwentyFilms()
+  // console.log(arrayOfFilms)
 
   const addToLoved = () => {
     const isLiked = likedMovies.some(item => item.id === randomMovie.id)

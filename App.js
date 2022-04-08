@@ -1,6 +1,5 @@
 import 'react-native-gesture-handler'
 
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import WishList from './components/WishList'
 import MainScreen from './components/MainScreen'
@@ -35,7 +34,6 @@ export default function App() {
           component={WishList}
           options={{
             headerBackTitle: 'Назад',
-            headerBackTitleStyle: 'Назад',
             headerStyle: {
               backgroundColor: 'black',
             },
