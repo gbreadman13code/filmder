@@ -4,11 +4,11 @@ import { StyleSheet, Text, View } from 'react-native';
 import WishList from './components/WishList'
 import MainScreen from './components/MainScreen'
 import Auth from './components/Auth'
-
-
+import Filter from './components/Filter';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+
 
 
 export default function App() {
@@ -18,9 +18,12 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-      <Stack.Screen
+        <Stack.Screen
           name={'Auth'}
           component={Auth}
+          options={{
+            headerShown: false,
+          }}
         />
         <Stack.Screen
           name={'Main'}
@@ -29,7 +32,14 @@ export default function App() {
             headerShown: false,
           }}
         />
-        
+        <Stack.Screen
+          name={'Filter'}
+          component={Filter}
+          options={{
+            headerShown: false,
+          }}
+        />
+
         <Stack.Screen
           name={'Избранное'}
           component={WishList}
@@ -38,7 +48,8 @@ export default function App() {
             headerStyle: {
               backgroundColor: 'black',
             },
-            headerTintColor: 'white'
+            headerTintColor: 'white',
+            presentation: 'modal'
           }}
         />
       </Stack.Navigator>
